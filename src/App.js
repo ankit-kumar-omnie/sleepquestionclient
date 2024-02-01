@@ -7,11 +7,10 @@
 // import { ErrorBoundary } from './components';
 // import IdleTimer from './components/IdleTimer';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import DynamicForm from './form/DynamicForm';
 import './style.scss';
-
 
 /**
  * Root Application Component
@@ -37,8 +36,8 @@ const App = () => {
 
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<DynamicForm />}></Route>
-        <Route path="/:id" element={<DynamicForm />}></Route>
+        <Route path="/" element={<Navigate to="/test" />} />
+        <Route path="/:id" element={<DynamicForm />} />
       </Routes>
     </BrowserRouter>
   );
