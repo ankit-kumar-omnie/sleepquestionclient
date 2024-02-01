@@ -21,6 +21,7 @@ const DynamicForm = () => {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   const getData = async () => {
     const id = 'c8026dae-7b8d-49ff-9433-80dbd1ae5097';
@@ -56,7 +57,6 @@ const DynamicForm = () => {
         dataType: 'json',
         headers: {
           'Content-Type': 'application/json',
-          clientId: 'gjh',
         },
         body: JSON.stringify({ formData }),
       });
@@ -66,9 +66,11 @@ const DynamicForm = () => {
         getData();
       } else {
         console.error('Failed to submit data');
+        setError(true);
       }
     } catch (error) {
       console.error('Error sending form data:', error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -84,6 +86,7 @@ const DynamicForm = () => {
     }
 
     setSuccess(false);
+    setError(false);
   };
 
   return (
@@ -121,6 +124,17 @@ const DynamicForm = () => {
                   Form submitted successfully!
                 </MuiAlert>
               </Snackbar>
+
+              <Snackbar
+                open={error}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MuiAlert elevation={6} variant="filled" onClose={handleCloseSnackbar} severity="error">
+                  Failed to submit form. Please try again.
+                </MuiAlert>
+              </Snackbar>
             </>
           )}
         </div>
@@ -128,4 +142,5 @@ const DynamicForm = () => {
     </div>
   );
 };
+
 export default DynamicForm;
