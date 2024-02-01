@@ -23,19 +23,16 @@ const DynamicForm = () => {
   const [success, setSuccess] = useState(false);
 
   const getData = async () => {
+    const id = 'c8026dae-7b8d-49ff-9433-80dbd1ae5097';
     try {
       setLoading(true);
-      const response = await fetch(
-        'https://formbackend-production.up.railway.app/sleepquestion/c8026dae-7b8d-49ff-9433-80dbd1ae5097',
-        {
-          method: 'GET',
-          dataType: 'json',
-          headers: {
-            'Content-Type': 'application/json',
-            clientId: '65b8c055d5da316d4d8d1f08',
-          },
-        }
-      );
+      const response = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
+        method: 'GET',
+        dataType: 'json',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -51,20 +48,18 @@ const DynamicForm = () => {
   };
 
   const onSubmit = async ({ formData }) => {
+    const id = 'e3698fb4-ad1b-4ca1-9d4f-1f5982b9e354';
     try {
       setLoading(true);
-      const response = await fetch(
-        'https://formbackend-production.up.railway.app/sleepquestion/e3698fb4-ad1b-4ca1-9d4f-1f5982b9e354',
-        {
-          method: 'PUT',
-          dataType: 'json',
-          headers: {
-            'Content-Type': 'application/json',
-            clientId: 'gjh',
-          },
-          body: JSON.stringify({ formData }),
-        }
-      );
+      const response = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
+        method: 'PUT',
+        dataType: 'json',
+        headers: {
+          'Content-Type': 'application/json',
+          clientId: 'gjh',
+        },
+        body: JSON.stringify({ formData }),
+      });
 
       if (response.ok) {
         setSuccess(true);
