@@ -35,7 +35,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-idle-timer": "^4.6.4",
-    "react-router-dom": "latest",
+    "react-router-dom": "^6.21.3",
     "react-scripts": "latest",
     "react-select": "^5.8.0",
     "sass": "^1.70.0",

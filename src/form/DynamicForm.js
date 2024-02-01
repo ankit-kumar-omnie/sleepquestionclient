@@ -10,6 +10,7 @@ import CustomDropdownMultiSelectWidget from './CustomDropdownMultiSelectWidget';
 import CustomSingleSelectDropdownWidget from './CustomDropDownSingleSelectWidget';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useParams } from 'react-router-dom';
 
 const widgets = {
   customRadio: CustomRadioWidget,
@@ -22,24 +23,42 @@ const DynamicForm = () => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const { id } = useParams();
+  const id1 = 'c8026dae-7b8d-49ff-9433-80dbd1ae5097';
 
-  const getData = async () => {
-    const id = 'c8026dae-7b8d-49ff-9433-80dbd1ae5097';
+  const checkUserAndFetchForm = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
+
+      const userResponse = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/formdata/${id}`, {
         method: 'GET',
         dataType: 'json',
         headers: {
           'Content-Type': 'application/json',
         },
-      });
+      })
+        .then((resp) => resp?.json())
+        .then((i) => {
+          setFormData(i?.data?.formData);
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        setFormData(data?.formData);
+      if (userResponse.ok) {
+        const formDataResponse = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id1}`, {
+          method: 'GET',
+          dataType: 'json',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (formDataResponse.ok) {
+          const data = await formDataResponse.json();
+          setFormData(data?.formData);
+        } else {
+          console.error('Failed to fetch form data');
+        }
       } else {
-        console.error('Failed to fetch data');
+        setFormData(null);
       }
     } catch (error) {
       console.error('Error:', error);
@@ -48,8 +67,11 @@ const DynamicForm = () => {
     }
   };
 
+  useEffect(() => {
+    checkUserAndFetchForm();
+  }, [id]);
+
   const onSubmit = async ({ formData }) => {
-    const id = 'e3698fb4-ad1b-4ca1-9d4f-1f5982b9e354';
     try {
       setLoading(true);
       const response = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
@@ -59,26 +81,22 @@ const DynamicForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ formData }),
-      });
-
-      if (response.ok) {
-        setSuccess(true);
-        getData();
-      } else {
-        console.error('Failed to submit data');
-        setError(true);
-      }
+      })
+        .then((resp) => resp?.json())
+        .then((i) => {
+          setSuccess(true);
+          setLoading(false);
+          setFormData(i?.data?.formData);
+        })
+        .catch((e) => {
+          console.error('Error sending form data:', e);
+          setError(true);
+        });
     } catch (error) {
       console.error('Error sending form data:', error);
       setError(true);
-    } finally {
-      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {

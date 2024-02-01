@@ -7,8 +7,11 @@
 // import { ErrorBoundary } from './components';
 // import IdleTimer from './components/IdleTimer';
 
-import DynamicForm from "./form/DynamicForm"
-import "./style.scss"
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import DynamicForm from './form/DynamicForm';
+import './style.scss';
+
 
 /**
  * Root Application Component
@@ -30,7 +33,14 @@ const App = () => {
     //     </AppThemeProvider>
     //   </AppStoreProvider>
     // </ErrorBoundary>
-    <DynamicForm/>
+    //
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DynamicForm />}></Route>
+        <Route path="/:id" element={<DynamicForm />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
