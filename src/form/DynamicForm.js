@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { dataSchema } from './dataSchema';
 import { uiSchema } from './uiSchema';
 import Form from '@rjsf/core';
@@ -26,7 +26,7 @@ const DynamicForm = () => {
   const { id } = useParams();
   const id1 = 'c8026dae-7b8d-49ff-9433-80dbd1ae5097';
 
-  const checkUserAndFetchForm = async () => {
+  const checkUserAndFetchForm = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -65,17 +65,20 @@ const DynamicForm = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  
-  useEffect(() => {
-    checkUserAndFetchForm();
   }, [id]);
+
+  const isFetchedRef = useRef(false);
+  useEffect(() => {
+    if (!isFetchedRef.current) {
+      isFetchedRef.current = true;
+      checkUserAndFetchForm();
+    }
+  }, [isFetchedRef, checkUserAndFetchForm]);
 
   const onSubmit = async ({ formData }) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
+      await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
         method: 'PUT',
         dataType: 'json',
         headers: {
