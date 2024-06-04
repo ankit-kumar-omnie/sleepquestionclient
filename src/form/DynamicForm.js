@@ -34,7 +34,7 @@ const DynamicForm = () => {
       const fetchId = id || defaultTestId;
 
       const userResponse = await fetch(
-        `https://formbackend-production.up.railway.app/sleepquestion/formdata/${fetchId}`,
+        `https://formbackend.zeabur.app/sleepquestion/formdata/${fetchId}`,
         {
           method: 'GET',
           dataType: 'json',
@@ -49,7 +49,7 @@ const DynamicForm = () => {
         });
 
       if (userResponse.ok) {
-        const formDataResponse = await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id1}`, {
+        const formDataResponse = await fetch(`https://formbackend.zeabur.app/sleepquestion/${id1}`, {
           method: 'GET',
           dataType: 'json',
           headers: {
@@ -84,7 +84,7 @@ const DynamicForm = () => {
   const onSubmit = async ({ formData }) => {
     try {
       setLoading(true);
-      await fetch(`https://formbackend-production.up.railway.app/sleepquestion/${id}`, {
+      await fetch(`https://formbackend.zeabur.app/sleepquestion/${id}`, {
         method: 'PUT',
         dataType: 'json',
         headers: {
